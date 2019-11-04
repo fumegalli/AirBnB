@@ -1,8 +1,8 @@
 import {createStackNavigator} from 'react-navigation';
 
-import SignIn from './pages/signIn';
-import SignUp from './pages/signUp';
-import Main from './pages/main';
+import SignIn from './screens/signIn';
+import SignUp from './screens/signUp';
+import Main from './screens/main';
 
 const Routes = createStackNavigator({
   SignIn,
