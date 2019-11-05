@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-import {StatusBar, AsyncStorage} from 'react-native';
+import {StatusBar, AsyncStorage, Platform} from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 
 import api from '../../services/api';
+import {logo} from '../../assets';
 
 import {
   Container,
@@ -16,6 +17,8 @@ import {
   SignUpLink,
   SignUpLinkText,
 } from './styles';
+
+const IS_IOS_DEVICE = Platform.OS === 'ios';
 
 export default function SignIn({navigation}) {
   const [email, setEmail] = useState('');
@@ -31,16 +34,13 @@ export default function SignIn({navigation}) {
       setError('Preencha usuário e senha para continuar!');
       return;
     }
-
     try {
-      const {
-        data: {token},
-      } = await api.post('/sessions', {
+      const response = await api.post('/sessions', {
         email,
         password,
       });
 
-      await AsyncStorage.setItem('@AirBnbApp:token', token);
+      await AsyncStorage.setItem('@AirBnbApp:token', response.data.token);
 
       const resetAction = StackActions.reset({
         index: 0,
@@ -54,12 +54,9 @@ export default function SignIn({navigation}) {
   }
 
   return (
-    <Container>
+    <Container behavior="padding" enabled={IS_IOS_DEVICE}>
       <StatusBar hidden />
-      <Logo
-        source={require('../../images/airbnb_logo.png')}
-        resizeMode="contain"
-      />
+      <Logo source={logo} resizeMode="contain" />
       <Input
         placeholder="Endereço de e-mail"
         value={email}
@@ -86,7 +83,11 @@ export default function SignIn({navigation}) {
   );
 }
 
-SignIn.PropTypes = {
+SignIn.navigationOptions = {
+  header: null,
+};
+
+SignIn.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
     dispatch: PropTypes.func,

@@ -1,7 +1,6 @@
-import React from 'react';
-
 import Routes from './routes';
+import {createAppContainer} from 'react-navigation';
 
-const App = () => <Routes />;
+const App = createAppContainer(Routes);
 
 export default App;

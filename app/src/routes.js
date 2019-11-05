@@ -1,4 +1,4 @@
-import {createStackNavigator} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 
 import SignIn from './screens/signIn';
 import SignUp from './screens/signUp';
